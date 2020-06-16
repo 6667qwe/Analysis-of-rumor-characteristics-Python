@@ -17,3 +17,4 @@ lda主题预测
 ![Image](https://github.com/6667qwe/Analysis-of-rumor-characteristics-Python/blob/master/数据文件/lda5.png)
 word2vec词间距
 ![Image](https://github.com/6667qwe/Analysis-of-rumor-characteristics-Python/blob/master/数据文件/J3HS(D6NL87GZX%7BQ8B46%60%5BQ.png)
+
