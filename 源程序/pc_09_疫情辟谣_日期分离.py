@@ -1,0 +1,61 @@
+import xlrd
+from openpyxl import Workbook
+
+
+path = 'C://Users//赵宗天//Desktop//认识Python//爬取文档//'
+file1 = '疫情辟谣2020-06-02-00-05_事实.xlsx'
+file2 = '疫情辟谣2020-06-02-00-05_事实_日期.xlsx'
+old_file = path + file1
+new_file = path + file2
+Title = []  # 存储新闻标题
+LinkUrl = []  # 存储新闻的链接
+keyword = []  # 存储新闻性质
+SourceName = []  # 存储新闻来源
+PubTime = []  # 存储新闻发布时间
+
+
+def dateSeparate():
+    rbook = xlrd.open_workbook(old_file)
+    rbook.sheets()
+    rsheet = rbook.sheet_by_index(0)
+    for row in rsheet.get_rows():
+        keyword_column = row[2]  # 品名所在的列
+        keyword_value = keyword_column.value  # 项目名
+        Title_column = row[0]
+        Title_value = Title_column.value
+        LinkUrl_column = row[1]
+        LinkUrl_value = LinkUrl_column.value
+        SourceName_column = row[3]
+        SourceName_value = SourceName_column.value
+        PubTime_column = row[4]
+        PubTime_value = PubTime_column.value
+        if keyword_value != '新闻性质':  # 排除第一行
+            Title.append(Title_value)
+            LinkUrl.append(LinkUrl_value)
+            keyword.append(keyword_value)
+            SourceName.append(SourceName_value)
+            s_PubTime_value = str(PubTime_value).split()[0]  # 分隔符，默认为空格,[0]表示取第一部分，即时分秒不要
+            PubTime.append(s_PubTime_value)
+
+
+def writeText():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'rumour'  # 更改工作表的标题
+    ws['A1'] = '标题'  # 对表格加入标题
+    ws['B1'] = '新闻链接'
+    ws['C1'] = '新闻性质'
+    ws['D1'] = '新闻来源'
+    ws['E1'] = '新闻发布时间'
+    for row in range(2, len(Title) + 2):  # 将数据写入表格
+        _ = ws.cell(column=1, row=row, value=Title[row - 2])
+        _ = ws.cell(column=2, row=row, value=LinkUrl[row - 2])
+        _ = ws.cell(column=3, row=row, value=keyword[row - 2])
+        _ = ws.cell(column=4, row=row, value=SourceName[row - 2])
+        _ = ws.cell(column=5, row=row, value=PubTime[row - 2])
+    wb.save(filename=new_file)  # 保存文件
+print('保存成功')
+
+if __name__ == '__main__':
+    dateSeparate()
+    writeText()
